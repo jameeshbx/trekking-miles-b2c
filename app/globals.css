@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+/* Custom styles for the flip clock */
+.flip-countdown-piece {
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 4px;
+  border-radius: 10px;
+  font-family: var(--font-nunito) !important;
+}
+
+.flip-countdown-card-sec,
+.card__top:after,
+.card__bottom:after,
+.card__back::before {
+  background-color: #2c463b !important;
+  --background-color: #2c463b !important;
+  --background-bottom-color: #2c463b !important;
+}
