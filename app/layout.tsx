@@ -1,16 +1,8 @@
 import type { Metadata } from "next";
-import { Poppins, Nunito } from "next/font/google";
+import { Nunito } from "next/font/google";
 import "./globals.css";
-import ResponsiveNav from "@/components/Home/Navbar/ResponsiveNav";
 import Provider from "@/components/Hoc/Provider";
-import Footer from "@/components/Home/Footer";
-import ScrollToTop from "@/components/Helper/ScrollToTop";
 
-const poppins = Poppins({
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
-  subsets: ["latin"],
-  variable: "--font-poppins",
-});
 
 const nunito = Nunito({
   weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
@@ -19,8 +11,8 @@ const nunito = Nunito({
 });
 
 export const metadata: Metadata = {
-  title: "Product Landing Page",
-  description: "Product Landing Page using Next.js and tailwindcss v4",
+  title: "Trekking Miles",
+  description: "Trekking Miles",
 };
 
 export default function RootLayout({

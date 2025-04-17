@@ -1,7 +1,5 @@
 import { companyLinks, socialIcons, supportLinks } from '@/constants/constant'
 import React from 'react'
-import { FaFacebook, FaFacebookF } from 'react-icons/fa'
-import { FaDribbble, FaInstagram, FaXTwitter } from 'react-icons/fa6'
 import { SocialIcon } from '../Helper/SocialIcon'
 import { FooterLink } from '../Helper/FooterLink'
 
@@ -20,10 +18,10 @@ const Footer = () => {
           {/* social links */}
           <div className='flex items-center text-white space-x-4 mt-6'>
             {socialIcons.map((social, index) => (
-              <SocialIcon 
-                key={index} 
-                Icon={social.Icon} 
-                bgColor={social.bgColor} 
+              <SocialIcon
+                key={index}
+                Icon={social.Icon}
+                bgColor={social.bgColor}
               />
             ))}
           </div>

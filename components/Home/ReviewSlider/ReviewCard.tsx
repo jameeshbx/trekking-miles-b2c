@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { BiSolidQuoteAltLeft, BiSolidQuoteAltRight } from "react-icons/bi";
-import { BsQuote } from "react-icons/bs";
 
 interface ReviewCardProps {
   image: string;
@@ -20,7 +19,7 @@ const ReviewCard = ({ image, name, role, content }: ReviewCardProps) => {
         <BiSolidQuoteAltRight className="w-12 h-12 text-pink-500 self-end" />
       </div>
       <div className="mt-2">
-        <Image 
+        <Image
           src={image}
           alt="image"
           width={100}

@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { FaCheck } from "react-icons/fa";
 import FeatureItem from "../Helper/FeatureItem";
 
 
@@ -19,7 +18,7 @@ const About = ({
   linkText,
   features
 }: AboutProps) => {
-  
+
   return (
     <div className="pt-16 pb-16">
       <div className="w-[80%] mx-auto grid items-center grid-cols-1 lg:grid-cols-2 gap-12">
@@ -32,7 +31,7 @@ const About = ({
             {features.map((feature, index) => (
               <FeatureItem key={index} text={feature} />
             ))}
-      
+
             {/* Link */}
             <p className="font-semibold text-pink-600 cursor-pointer hover:underline w-fit">
               {linkText}
@@ -41,12 +40,12 @@ const About = ({
         </div>
 
         {/* image content */}
-        <div 
+        <div
           className={`${imageOrder}`}
           data-aos="zoom-in"
-          data-aos-anchor-placement="top-center" 
+          data-aos-anchor-placement="top-center"
         >
-          <Image 
+          <Image
             src="/images/h1.png"
             alt="image"
             width={380}
