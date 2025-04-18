@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "../../generated/prisma";
-
-const prisma = new PrismaClient();
+import prisma from "@/lib/prisma";
 
 export async function POST(request: Request) {
   try {
@@ -21,7 +19,10 @@ export async function POST(request: Request) {
       { message: "Successfully subscribed!", subscription },
       { status: 201 }
     );
-  } catch (error: any) {
+  } catch (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    error: any
+  ) {
     if (error.code === "P2002") {
       return NextResponse.json(
         { error: "Email already subscribed" },
