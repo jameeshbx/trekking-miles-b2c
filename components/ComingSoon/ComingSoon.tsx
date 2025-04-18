@@ -42,7 +42,7 @@ const ComingSoonPage = () => {
                 setMessage(data.error || 'Something went wrong');
             }
         } catch (error) {
-            setMessage('Failed to subscribe. Please try again.');
+            setMessage(`Failed to subscribe. Please try again.${error}`);
         } finally {
             setIsSubmitting(false);
         }
@@ -109,7 +109,7 @@ const ComingSoonPage = () => {
                         </button>
                     </div>
                     {message && (
-                        <p className={`text-center text-sm ${message.includes('Successfully') ? 'text-green-400' : 'text-red-400'}`}>
+                        <p className={`bg-gray-900/80 rounded-l-md p-3 border border-white/30 shadow-[0_4px_6px_rgba(0,0,0,0.1)] text-center text-sm ${message.includes('Successfully') ? 'text-white' : 'text-[#c62c03]'}`}>
                             {message}
                         </p>
                     )}
