@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
 import "./globals.css";
 import Provider from "@/components/Hoc/Provider";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 
 const nunito = Nunito({
@@ -25,6 +27,8 @@ export default function RootLayout({
       <body
         className={`${nunito.className} antialiased`}
       >
+        <Analytics />
+        <SpeedInsights />
         <Provider>
           {children}
         </Provider>
