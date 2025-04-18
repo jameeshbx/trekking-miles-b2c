@@ -2,11 +2,14 @@
   "name": "next15-landingpage-v4",
   "version": "0.1.0",
   "private": true,
+
   "scripts": {
+    "postinstall": "npx prisma generate && npx prisma migrate dev",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prepare": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^6.6.0",
