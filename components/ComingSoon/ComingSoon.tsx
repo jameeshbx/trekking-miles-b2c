@@ -6,6 +6,9 @@ import Image from 'next/image';
 
 const ComingSoonPage = () => {
     const [isLoading, setIsLoading] = useState(true);
+    const [email, setEmail] = useState('');
+    const [message, setMessage] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const targetDate = '2026-01-01';
 
     useEffect(() => {
@@ -15,6 +18,35 @@ const ComingSoonPage = () => {
         }, 100);
         return () => clearTimeout(timer);
     }, []);
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        setMessage('');
+
+        try {
+            const response = await fetch('/api/subscribe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setMessage('Successfully subscribed!');
+                setEmail('');
+            } else {
+                setMessage(data.error || 'Something went wrong');
+            }
+        } catch (error) {
+            setMessage('Failed to subscribe. Please try again.');
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
 
     return (
         <div className="min-h-screen bg-[url('/images/bg-coming-soon.jpeg')] bg-cover bg-center flex flex-col items-center justify-center p-4 text-white">
@@ -56,22 +88,31 @@ const ComingSoonPage = () => {
 
             {/* Newsletter Signup */}
             <div className="w-full max-w-md">
-                <form className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="relative">
                         <input
                             type="email"
                             id="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             placeholder="Enter your email"
                             className="w-full px-4 py-2 pl-4 pr-32 rounded-[18px] bg-white text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
+                            disabled={isSubmitting}
                         />
                         <button
                             type="submit"
-                            className="absolute right-1 top-1/2 -translate-y-1/2 bg-[#c62c03] hover:bg-red-700 text-white px-4 py-1 rounded-[16px] font-medium transition duration-200"
+                            disabled={isSubmitting}
+                            className="absolute right-1 top-1/2 -translate-y-1/2 bg-[#c62c03] hover:bg-red-700 text-white px-4 py-1 rounded-[16px] font-medium transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            Notify Me
+                            {isSubmitting ? 'Subscribing...' : 'Notify Me'}
                         </button>
                     </div>
+                    {message && (
+                        <p className={`text-center text-sm ${message.includes('Successfully') ? 'text-green-400' : 'text-red-400'}`}>
+                            {message}
+                        </p>
+                    )}
                 </form>
             </div>
 
