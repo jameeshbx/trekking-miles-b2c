@@ -11,8 +11,8 @@ const nunito = Nunito({
 });
 
 export const metadata: Metadata = {
-  title: "Trekking Miles",
-  description: "Trekking Miles",
+  title: "Trekking Miles - Explore, Discover and Experience!",
+  description: "A Sustainable Tourism Initiative! Travel, Experience and Help Local!",
 };
 
 export default function RootLayout({
