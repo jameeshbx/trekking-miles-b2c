@@ -1,12 +1,19 @@
-import ComingSoon from "@/components/ComingSoon/ComingSoon"
+import Topbar from "@/components/landingpage/Topbar"
+import HeroSection from "@/components/landingpage/hero-section"
+import Destinations from "@/components/landingpage/destinations"
+import Testimonials from "@/components/landingpage/testimonials"
+import ContactUs from "@/components/landingpage/contact-us"
+import Footer from "@/components/landingpage/footer"
 
-
-const HomePage = () => {
+export default function Home() {
   return (
-    <>
-      <ComingSoon />
-    </>
+    <main className="min-h-screen">
+      <Topbar />
+      <HeroSection />
+      <Destinations />
+     <Testimonials/>
+       <ContactUs />
+      <Footer /> 
+    </main>
   )
 }
-
-export default HomePage
