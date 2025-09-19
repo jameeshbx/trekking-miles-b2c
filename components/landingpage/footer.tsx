@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion"
 import Image from "next/image"
-import { Mountain, Phone, Mail, MapPin, Facebook, Instagram, Twitter, Youtube } from "lucide-react"
+import {  Phone, Mail, MapPin, Facebook, Instagram, Twitter, Youtube } from "lucide-react"
 
 export default function Footer() {
   const handleCallClick = () => {
@@ -28,10 +28,10 @@ export default function Footer() {
                <Image src="/tm-logo.png" alt="" width={200} height={100} />
               </div>
               <p className="text-background/80 mb-6 text-pretty leading-relaxed">
-                Your trusted partner for unforgettable adventures across Asia. We specialize in creating personalized
-                travel experiences that connect you with the world's most beautiful destinations, cultures, and memories
-                that last a lifetime.
-              </p>
+  Your trusted partner for unforgettable adventures across Asia. We specialize in creating personalized
+  travel experiences that connect you with the world&apos;s most beautiful destinations, cultures, and memories
+  that last a lifetime.
+</p>
               <div className="flex space-x-4">
                 <a href="#" className="bg-background/10 hover:bg-accent p-2 rounded-full transition-colors">
                   <Facebook className="h-5 w-5" />

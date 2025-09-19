@@ -6,9 +6,9 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Phone, Mail, MapPin, MessageCircle, Send, CheckCircle } from "lucide-react"
+import { Phone, Mail, MapPin, MessageCircle,  CheckCircle } from "lucide-react"
 import { useState } from "react"
-import { MouseEvent } from 'react';
+
 
 export default function ContactUs() {
   const [formData, setFormData] = useState({
@@ -18,8 +18,8 @@ export default function ContactUs() {
     destination: "",
     message: "",
   })
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitStatus, setSubmitStatus] = useState<{type: 'success' | 'error' | null, message: string}>({type: null, message: ''})
+ 
+  const [submitStatus, ] = useState<{type: 'success' | 'error' | null, message: string}>({type: null, message: ''})
 
   
   const handleWhatsAppClick = (e: React.FormEvent) => {
@@ -37,55 +37,6 @@ export default function ContactUs() {
     window.open(`https://wa.me/919447046426?text=${message}`, '_blank');
   }
 
-  const handleEmailSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    setSubmitStatus({type: null, message: ''})
-    
-    try {
-      const response = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          to: 'support@trekkingmiles.com',
-          subject: `New Enquiry from ${formData.name || 'Customer'}`,
-          text: `New Enquiry Details:\n\n` +
-            `Name: ${formData.name || 'Not provided'}\n` +
-            `Email: ${formData.email || 'Not provided'}\n` +
-            `Phone: ${formData.phone || 'Not provided'}\n` +
-            `Destination: ${formData.destination || 'Not specified'}\n` +
-            `Message: ${formData.message || 'No message provided'}`
-        })
-      })
-
-      if (response.ok) {
-        setSubmitStatus({type: 'success', message: 'Email sent successfully!'})
-        // Reset form after successful submission
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          destination: '',
-          message: ''
-        });
-      } else {
-        throw new Error('Failed to send email')
-      }
-    } catch (error) {
-      console.error('Error sending email:', error)
-      setSubmitStatus({type: 'error', message: 'Failed to send email. Please try again.'})
-    } finally {
-      setIsSubmitting(false)
-      // Clear success message after 5 seconds
-      if (submitStatus.type === 'success') {
-        setTimeout(() => {
-          setSubmitStatus({type: null, message: ''})
-        }, 5000)
-      }
-    }
-  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -115,9 +66,9 @@ export default function ContactUs() {
             Ready to Start Your Adventure?
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-pretty">
-            Get in touch with our travel experts to plan your perfect getaway. We're here to make your dream trip a
-            reality.
-          </p>
+  Get in touch with our travel experts to plan your perfect getaway. We&apos;re here to make your dream trip a
+  reality.
+</p>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -168,9 +119,9 @@ export default function ContactUs() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label htmlFor="phone" className="block text-sm font-medium text-card-foreground mb-2">
-                        Phone Number *
-                      </label>
+                    <label htmlFor="phone" className="block text-sm font-medium text-card-foreground mb-2">
+  Phone Number <span className="text-red-500">*</span>
+</label>
                       <Input
                         id="phone"
                         name="phone"
@@ -226,7 +177,7 @@ export default function ContactUs() {
       <Button
         type="button"
         onClick={handleWhatsAppClick}
-        className="flex-1 bg-green-600 hover:bg-green-700 text-white py-3 text-lg font-semibold group transition-colors"
+        className="flex-1 bg-green-800 hover:bg-green-700 text-white py-3 text-lg font-semibold group transition-colors"
       >
         <MessageCircle className="h-5 w-5 mr-2" />
         WhatsApp Us
@@ -236,7 +187,7 @@ export default function ContactUs() {
       <Button
         type="button"
         onClick={handleCallClick}
-        className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 text-lg font-semibold group transition-colors"
+        className="flex-1 bg-orange-800 hover:bg-blue-700 text-white py-3 text-lg font-semibold group transition-colors"
       >
         <Phone className="h-5 w-5 mr-2" />
         Call Us Now

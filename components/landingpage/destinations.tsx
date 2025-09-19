@@ -108,10 +108,6 @@ export default function DestinationsCarousel() {
     window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
   }
 
-  const getCurrentDestinations = () => {
-    const startIndex = currentIndex * itemsPerSlide
-    return destinations.slice(startIndex, startIndex + itemsPerSlide)
-  }
 
   return (
     <section id="destinations" className="py-20 bg-black">
@@ -267,9 +263,9 @@ export default function DestinationsCarousel() {
           viewport={{ once: true }}
           className="text-center mt-16"
         >
-          <p className="text-lg text-gray-300 mb-6">
-            Can't find your dream destination? We create custom itineraries too!
-          </p>
+         <p className="text-lg text-gray-300 mb-6">
+  Can&apos;t find your dream destination? We create custom itineraries too!
+</p>
           <Button
             size="lg"
             onClick={handleCallbackRequest}

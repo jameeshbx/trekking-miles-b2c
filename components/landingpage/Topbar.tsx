@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { Menu, X, Mountain, Phone } from "lucide-react"
+import { Menu, X, Phone } from "lucide-react"
 
 export default function Topbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)

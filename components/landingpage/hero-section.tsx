@@ -29,15 +29,15 @@ export default function HeroSection() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="max-w-4xl mx-auto"
         >
-          <motion.h1
-            initial={{ y: 50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-balance"
-          >
-            Explore the World's
-            <span className="text-accent block">Hidden Gems</span>
-          </motion.h1>
+         <motion.h1
+  initial={{ y: 50, opacity: 0 }}
+  animate={{ y: 0, opacity: 1 }}
+  transition={{ duration: 0.8, delay: 0.4 }}
+  className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-balance"
+>
+  Explore the World&apos;s
+  <span className="text-accent block">Hidden Gems</span>
+</motion.h1>
 
           <motion.p
             initial={{ y: 30, opacity: 0 }}

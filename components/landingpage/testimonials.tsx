@@ -101,9 +101,9 @@ export default function Testimonials() {
             What Our Travelers Say
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-pretty text-white dark:text-white">
-            Don't just take our word for it. Here's what our happy travelers have to say about their incredible journeys
-            with TrekkingMiles.
-          </p>
+  Don&apos;t just take our word for it. Here&apos;s what our happy travelers have to say about their incredible journeys
+  with TrekkingMiles.
+</p>
         </motion.div>
 
         {/* Testimonials Carousel */}
@@ -158,8 +158,8 @@ export default function Testimonials() {
 
                               {/* Testimonial Text */}
                               <p className="text-card-foreground mb-6 text-pretty leading-relaxed">
-                                "{testimonial.text}"
-                              </p>
+  &ldquo;{testimonial.text}&rdquo;
+</p>
 
                               {/* Trip Info */}
                               <div className="bg-muted rounded-lg p-3 mb-4">
