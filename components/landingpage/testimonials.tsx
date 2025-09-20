@@ -4,62 +4,108 @@ import { motion } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react"
 import { useState } from "react"
+import Image from "next/image"
 
 const testimonials = [
   {
     id: 1,
-    name: "Priya Sharma",
-    location: "Mumbai, India",
-    image: "/indian-woman-smiling.png",
+    name: "Abhilash Parayil",
+    location: "Kochi, India",
+    image: "/images/abhilash.png",
     rating: 5,
-    text: "TrekkingMiles made our Nepal adventure absolutely incredible! The guides were knowledgeable, the itinerary was perfect, and every detail was taken care of. We reached Everest Base Camp safely and had the experience of a lifetime.",
-    trip: "Nepal - Everest Base Camp Trek",
+    text: "Five stars aren't enough for their service, so I added a few more! Jokes apart, I had a wonderful experience with Trekking Miles during my trek to Agasthyarkoodam. Their support began 14 days before the trek, helping me with preparation workouts that proved invaluable on the trail.",
+    trip: "Kerala - Agasthyarkoodam Trek"
   },
   {
     id: 2,
-    name: "Rajesh Kumar",
-    location: "Delhi, India",
-    image: "/indian-man-smiling-portrait.png",
+    name: "Abhishek ghani",
+    location: "Mumbai, India",
+    image: "/images/abhishek.png",
     rating: 5,
-    text: "Our family trip to Thailand was phenomenal! From the bustling streets of Bangkok to the serene beaches of Phuket, everything was organized perfectly. The kids loved every moment, and so did we.",
-    trip: "Thailand - Family Package",
+    text: "I had an absolutely fantastic experience on this tour! Everything was perfectly organized from start to finish. The guide was knowledgeable, friendly, and made the trip both fun and informative. The sights were breathtaking, and I really appreciated the little details that made the experience feel personalized.",
+    trip: "Himachal - Spiti Valley Expedition"
   },
   {
     id: 3,
-    name: "Anita Patel",
-    location: "Bangalore, India",
-    image: "/indian-woman-happy-portrait.jpg",
+    name: "Saneesh Kumar",
+    location: "Delhi, India",
+    image: "/images/saneesh kumar.png",
     rating: 5,
-    text: "The Kerala backwater cruise was magical! Floating through the serene waters, staying in traditional houseboats, and experiencing local culture - it was exactly what we needed for our anniversary.",
-    trip: "Kerala - Backwater Experience",
+    text: "Thank you to the team Trekkingmiles for organizing a fantastic Dubai trip! Everything was smooth, from the itinerary to the on-ground support. Truly appreciate your attention to detail—will recommend your services to others.",
+    trip: "Dubai - Ultimate Experience"
   },
   {
     id: 4,
-    name: "Vikram Singh",
-    location: "Pune, India",
-    image: "/indian-man-adventure-portrait.jpg",
+    name: "Praveesh Kumar",
+    location: "Hyderabad, India",
+    image: "/images/praveesh.png",
     rating: 5,
-    text: "Bali exceeded all expectations! The perfect blend of adventure and relaxation. From temple visits in Ubud to surfing in Canggu, TrekkingMiles crafted an itinerary that suited our adventurous spirits perfectly.",
-    trip: "Bali - Adventure Package",
+    text: "Wonderful Experience…Can expect well-planned arrangements for trekking, ensuring a safe and enjoyable experience. Good work Team…Hope to see all of you very soon.🫡❤️",
+    trip: "Uttarakhand - Valley of Flowers"
   },
   {
     id: 5,
-    name: "Meera Joshi",
-    location: "Chennai, India",
-    image: "/indian-woman-travel-portrait.jpg",
+    name: "Sruthy Mohan",
+    location: "Bangalore, India",
+    image: "/images/swapna.png",
     rating: 5,
-    text: "Vietnam was a revelation! The food, the culture, the landscapes - everything was breathtaking. Ha Long Bay cruise was the highlight. Thank you TrekkingMiles for such a well-planned journey.",
-    trip: "Vietnam - Cultural Explorer",
+    text: "Trekkingmiles exceeded all expectations as a travel partner. Their team was experienced, polite, and attentive from start to finish. The entire trip was well organized. I strongly recommend Trekkingmiles 💯",
+    trip: "Ladakh - Chadar Trek"
   },
   {
     id: 6,
-    name: "Arjun Reddy",
-    location: "Hyderabad, India",
-    image: "/indian-man-beach-portrait.jpg",
+    name: "Meera Joshi",
+    location: "Pune, India",
+    image: "/images/swapna.png",
     rating: 5,
-    text: "Goa with TrekkingMiles was fantastic! They showed us hidden gems beyond the usual tourist spots. The local experiences, beach activities, and heritage walks made it truly special.",
-    trip: "Goa - Hidden Gems Tour",
+    text: "Had a great experience with trekking miles. The team was helpful, well-organized, and made the whole trip smooth and enjoyable. Highly recommended for anyone planning stress-free travel.",
+    trip: "Sikkim - Goecha La Trek"
   },
+  {
+    id: 7,
+    name: "Shamila",
+    location: "Calicut, Kerala",
+    image: "/images/shamila.png",
+    rating: 5,
+    text: "A big thanks to Trekking miles for making my Dubai trip so smooth and memorable. Your service was really excellent. I had the chance to explore the places what I wish,  Burj Khalifa, Desert Safari, and the colorful Miracle Garden.",
+    trip: "Dubai - Premium Package"
+  },
+  {
+    id: 8,
+    name: "Arsha Es",
+    location: "Trivandrum, Kerala",
+    image: "/images/arsha.png",
+    rating: 5,
+    text: "We had a wonderful family trip to Dubai, and Trekkingmiles did a great job organizing everything. The planning was smooth, the arrangements were reliable, and the trip was hassle-free. Thanks to the team for making our vacation so enjoyable and memorable!",
+    trip: "Dubai - Family Holiday"
+  },
+  {
+    id: 9,
+    name: "Divya Velloli",
+    location: "Mysore, India",
+    image: "/images/divya.png",
+    rating: 5,
+    text: "The experience with Trekking Miles was a great one!! From the time of booking till the trip ended, the friendly & courteous approach by the whole Team just made memories in our hearts. Thank you for the lovely trip.",
+    trip: "Kerala - Backwaters & Beaches"
+  },
+  {
+    id: 10,
+    name: "Krishna Murali",
+    location: "Kannur, Kerala",
+    image: "/images/krishna.png",
+    rating: 5,
+    text: "Had a wonderful experience with Trekking Miles Adventure – well-organized, safe, and memorable. The team was professional, friendly, and made the trek truly enjoyable!",
+    trip: "Himachal - Hampta Pass Trek"
+  },
+  {
+    id: 11,
+    name: "Sreejith MM",
+    location: "Muscat, Oman",
+    image: "/images/sreejith.png",
+    rating: 5,
+    text: "Had an incredible time with Trekkingmile Adventures! Everything was well organized, the team was professional, and the guides were super friendly. Truly an unforgettable experience!",
+    trip: "Uttarakhand - Kedarkantha Trek"
+  }
 ]
 
 export default function Testimonials() {
@@ -168,9 +214,11 @@ export default function Testimonials() {
 
                               {/* Author Info */}
                               <div className="flex items-center space-x-3">
-                                <img
+                                <Image
                                   src={testimonial.image || "/placeholder.svg"}
                                   alt={testimonial.name}
+                                  width={48}
+                                  height={48}
                                   className="w-12 h-12 rounded-full object-cover"
                                 />
                                 <div>

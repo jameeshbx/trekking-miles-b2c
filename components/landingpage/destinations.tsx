@@ -3,279 +3,323 @@
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Phone, MapPin, Star, ChevronLeft, ChevronRight, MessageCircle } from "lucide-react"
+import { Phone,  Star,  X } from "lucide-react"
 import { useState } from "react"
+import Image from "next/image"
+import Link from "next/link"
+
+// Callback Form Component
+const CallbackForm = ({ destination, onClose }: { destination: string; onClose: () => void }) => {
+  const [formData, setFormData] = useState({
+    fullName: "",
+    phone: "",
+    email: "",
+  })
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{success: boolean; message: string; previewUrl?: string} | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          destination,
+          ...formData
+        }),
+      });
+
+      const result = await response.json();
+      
+      if (response.ok) {
+        setSubmitStatus({
+          success: true,
+          message: `Thank you ${formData.fullName}! We'll contact you soon about ${destination}.`,
+          previewUrl: result.previewUrl
+        });
+        // Reset form
+        setFormData({
+          fullName: "",
+          phone: "",
+          email: "",
+        });
+        // Close form after 3 seconds
+        setTimeout(onClose, 3000);
+      } else {
+        throw new Error(result.message || 'Failed to send message');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitStatus({
+        success: false,
+        message: error instanceof Error ? error.message : 'Failed to send message. Please try again.'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }))
+  }
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg p-6 w-full max-w-md relative">
+        <button 
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+        >
+          <X className="h-5 w-5" />
+        </button>
+        
+        <h3 className="text-xl font-bold mb-4 text-white">Request Callback for {destination}</h3>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {submitStatus ? (
+            <div className={`p-4 rounded-md ${submitStatus.success ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+              {submitStatus.message}
+              {submitStatus.previewUrl && (
+                <div className="mt-2 text-sm">
+                  <Link 
+                    href={submitStatus.previewUrl} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-blue-600 hover:underline"
+                  >
+                    View email preview
+                  </Link>
+                </div>
+              )}
+            </div>
+          ) : (
+            <>
+              <div>
+                <label className="block text-sm font-medium mb-1 text-black">Full Name</label>
+                <input
+                  type="text"
+                  value={formData.fullName}
+                  onChange={(e) => handleInputChange("fullName", e.target.value)}
+                  required
+                  className="w-full p-2 border rounded-md text-black"
+                  disabled={isSubmitting}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1 text-black">Phone Number</label>
+                <input
+                  type="tel"
+                  value={formData.phone}
+                  onChange={(e) => handleInputChange("phone", e.target.value)}
+                  required
+                  className="w-full p-2 border rounded-md text-black"
+                  disabled={isSubmitting}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1 text-black">Email</label>
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => handleInputChange("email", e.target.value)}
+                  required
+                  className="w-full p-2 border rounded-md text-black"
+                  disabled={isSubmitting}
+                />
+              </div>
+              <div className="flex gap-2 pt-2">
+                <Button 
+                  type="button" 
+                  onClick={onClose} 
+                  variant="outline" 
+                  className="flex-1"
+                  disabled={isSubmitting}
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  type="submit" 
+                  className="flex-1 bg-orange-600 hover:bg-orange-700"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Sending...' : 'Submit'}
+                </Button>
+              </div>
+            </>
+          )}
+        </form>
+      </div>
+    </div>
+  )
+}
 
 const destinations = [
   {
     id: 1,
     name: "Thailand",
     image: "/thailand.png",
-    description: "Explore ancient temples, pristine beaches, and vibrant culture in the Land of Smiles.",
+    description: "Discover Thailand's perfect blend of ancient traditions and modern attractions. From the bustling streets of Bangkok to the tranquil beaches of Phuket and the lush mountains of Chiang Mai, Thailand offers diverse experiences for every traveler. Immerse yourself in vibrant street markets, ornate temples, and world-renowned Thai cuisine.",
     highlights: ["Bangkok Temples", "Phuket Beaches", "Chiang Mai Mountains"],
     rating: 4.9,
-    price: "From ₹45,000",
+    price: "From ₹14,500 per person",
   },
   {
     id: 2,
     name: "Goa",
     image: "/goa.png",
-    description: "Relax on golden beaches, enjoy Portuguese architecture, and experience vibrant nightlife.",
+    description: "Experience the perfect beach getaway in Goa, where golden sands meet the Arabian Sea. Known for its Portuguese heritage, vibrant nightlife, and water sports, Goa offers a unique blend of relaxation and adventure. Explore colonial churches, spice plantations, and enjoy fresh seafood by the beach.",
     highlights: ["Beach Paradise", "Colonial Heritage", "Water Sports"],
     rating: 4.8,
-    price: "From ₹25,000",
+    price: "From ₹4,999 per person",
   },
   {
     id: 3,
     name: "Kerala",
     image: "/kerala.png",
-    description: "Cruise through serene backwaters, explore spice plantations, and witness Ayurvedic traditions.",
+    description: "Welcome to 'God's Own Country', where emerald backwaters, spice-scented hills, and palm-fringed beaches create a serene paradise. Cruise on traditional houseboats through tranquil backwaters, witness Kathakali performances, and rejuvenate with authentic Ayurvedic treatments in this tropical haven.",
     highlights: ["Backwater Cruises", "Spice Gardens", "Hill Stations"],
     rating: 4.9,
-    price: "From ₹30,000",
+    price: "From ₹7,999 per person",
   },
   {
     id: 4,
     name: "Vietnam",
     image: "/vietnam.png",
-    description: "Discover stunning landscapes, rich history, and incredible street food culture.",
+    description: "Journey through Vietnam's breathtaking landscapes, from the limestone karsts of Halong Bay to the terraced rice fields of Sapa. Experience the vibrant street food scene, explore ancient temples, and learn about the country's rich history while cruising along the Mekong Delta.",
     highlights: ["Halong Bay", "Ho Chi Minh City", "Sapa Mountains"],
     rating: 4.7,
-    price: "From ₹55,000",
+    price: "From ₹4,599 per person",
   },
   {
     id: 5,
     name: "Bali",
     image: "/bali.png",
-    description: "Experience spiritual temples, lush rice terraces, and world-class beaches.",
-    highlights: ["Ubud Culture", "Beach Clubs", "Volcano Treks"],
+    description: "Discover the Island of the Gods, where spiritual traditions meet natural beauty. From the cultural heart of Ubud to the stunning beaches of Seminyak and the volcanic landscapes of Mount Batur, Bali offers a perfect mix of relaxation, adventure, and cultural immersion.",
+    highlights: ["Ubud Culture", "Beach Clubs", "Volcano Treaks"],
     rating: 4.8,
-    price: "From ₹50,000",
+    price: "From ₹10,999 per person",
   },
   {
     id: 6,
     name: "Nepal",
     image: "/nepal.png",
-    description: "Trek through the Himalayas, visit ancient monasteries, and witness breathtaking peaks.",
+    description: "Experience the majesty of the Himalayas in Nepal, home to eight of the world's highest peaks. Trek to Everest Base Camp, explore ancient Buddhist monasteries, and witness breathtaking mountain vistas. The warm hospitality of the Nepalese people makes every journey unforgettable.",
     highlights: ["Everest Base Camp", "Annapurna Circuit", "Kathmandu Valley"],
     rating: 4.9,
-    price: "From ₹65,000",
-  },
+    price: "From ₹12,999 per person",
+  }
 ]
 
 export default function DestinationsCarousel() {
-  const [currentIndex, setCurrentIndex] = useState(0)
+  const [showForm, setShowForm] = useState(false);
+  const [selectedDestination, setSelectedDestination] = useState("");
 
-  const getItemsPerSlide = () => {
-    if (typeof window !== "undefined") {
-      if (window.innerWidth < 768) return 1 // Mobile: 1 item
-      if (window.innerWidth < 1024) return 2 // Tablet: 2 items
-      return 3 // Desktop: 3 items
-    }
-    return 3
-  }
-
-  const [itemsPerSlide, setItemsPerSlide] = useState(3)
-
-  const handleResize = () => {
-    setItemsPerSlide(getItemsPerSlide())
-  }
-
-  useState(() => {
-    if (typeof window !== "undefined") {
-      setItemsPerSlide(getItemsPerSlide())
-      window.addEventListener("resize", handleResize)
-      return () => window.removeEventListener("resize", handleResize)
-    }
-  })
-
-  const totalSlides = Math.ceil(destinations.length / itemsPerSlide)
-
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % totalSlides)
-  }
-
-  const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + totalSlides) % totalSlides)
-  }
-
-  const handleCallbackRequest = () => {
-    window.location.href = "tel:9447046426"
-  }
-  const handleWhatsAppMessage = (destinationName: string) => {
-    const phoneNumber = "919447046426"; // Your WhatsApp number without the + sign
-    const message = `Hi, I'm interested in the ${destinationName} package. Can you provide more details?`;
-    window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
-  }
-
+  const openForm = (destination: string) => {
+    setSelectedDestination(destination);
+    setShowForm(true);
+  };
 
   return (
-    <section id="destinations" className="py-20 bg-black">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
+    <section className="py-12 bg-black">
+      <div className="container mx-auto px-4">
         <motion.div
-          initial={{ y: 50, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 text-balance">
-            Popular Destinations
-          </h2>
-          <p className="text-lg text-white max-w-2xl mx-auto text-pretty">
-            Discover our handpicked destinations across Asia, each offering unique experiences and unforgettable
-            memories waiting to be made.
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white font-bold ">Popular Destinations</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto font-bold text-white">
+            Explore our most sought-after destinations that promise unforgettable experiences and memories.
           </p>
         </motion.div>
 
-        <div className="relative">
-          {/* Navigation Buttons */}
-          <div className="flex justify-between items-center mb-8">
-            <Button
-              onClick={prevSlide}
-              variant="outline"
-              size="icon"
-              className="bg-white/10 border-white/20 text-white hover:bg-white/20 transition-all duration-300"
-              disabled={currentIndex === 0}
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </Button>
-
-            {/* Slide Indicators */}
-            <div className="flex space-x-2">
-              {Array.from({ length: totalSlides }).map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentIndex(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    index === currentIndex ? "bg-orange-600 scale-110" : "bg-white/30 hover:bg-white/50"
-                  }`}
-                />
-              ))}
-            </div>
-
-            <Button
-              onClick={nextSlide}
-              variant="outline"
-              size="icon"
-              className="bg-white/10 border-white/20 text-white hover:bg-white/20 transition-all duration-300"
-              disabled={currentIndex === totalSlides - 1}
-            >
-              <ChevronRight className="h-5 w-5" />
-            </Button>
-          </div>
-
-          <div className="overflow-hidden">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {destinations.map((destination) => (
             <motion.div
-              className="flex transition-transform duration-500 ease-in-out"
-              style={{
-                transform: `translateX(-${currentIndex * 100}%)`,
-              }}
+              key={destination.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+              className="group"
             >
-              {Array.from({ length: totalSlides }).map((_, slideIndex) => (
-                <div key={slideIndex} className="w-full flex-shrink-0">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-2">
-                    {destinations
-                      .slice(slideIndex * itemsPerSlide, (slideIndex + 1) * itemsPerSlide)
-                      .map((destination, index) => (
-                        <motion.div
-                          key={destination.id}
-                          initial={{ y: 50, opacity: 0 }}
-                          whileInView={{ y: 0, opacity: 1 }}
-                          transition={{ duration: 0.6, delay: index * 0.1 }}
-                          viewport={{ once: true }}
-                          className="w-full"
-                        >
-                          <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 border-0 bg-card shadow-lg text-white h-full">
-                            <div className="relative overflow-hidden">
-                              <img
-                                src={
-                                  destination.image || "/placeholder.svg?height=256&width=400&query=travel destination"
-                                }
-                                alt={destination.name}
-                                className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
-                              />
-                              <div className="absolute top-4 right-4 bg-black/30 backdrop-blur-sm rounded-full px-3 py-1 flex items-center space-x-1">
-                                <Star className="h-4 w-4 text-yellow-500 fill-current" />
-                                <span className="text-sm font-semibold text-white">{destination.rating}</span>
-                              </div>
-                              <div className="absolute bottom-4 left-4 bg-orange-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                                {destination.price}
-                              </div>
-                            </div>
-
-                            <CardContent className="p-6 bg-white text-black flex-1 flex flex-col">
-                              <div className="flex items-center space-x-2 mb-3">
-                                <MapPin className="h-5 w-5 text-orange-600" />
-                                <h3 className="text-xl font-bold text-gray-900">{destination.name}</h3>
-                              </div>
-
-                              <p className="text-gray-600 mb-4 text-pretty flex-1">{destination.description}</p>
-
-                              <div className="mb-6">
-                                <h4 className="text-sm font-semibold text-gray-900 mb-2">Highlights:</h4>
-                                <div className="flex flex-wrap gap-2">
-                                  {destination.highlights.map((highlight, idx) => (
-                                    <span
-                                      key={idx}
-                                      className="bg-gray-100 text-gray-700 px-2 py-1 rounded-full text-xs"
-                                    >
-                                      {highlight}
-                                    </span>
-                                  ))}
-                                </div>
-                              </div>
-
-                              <div className="space-y-2">
-  <Button
-    onClick={() => handleWhatsAppMessage(destination.name)}
-    variant="outline"
-    className="w-full border-orange-600 text-orange-600 hover:bg-orange-50 hover:text-orange-700"
-  >
-    <MessageCircle className="h-4 w-4 mr-2" />
-    Send Message
-  </Button>
-  <Button
-    onClick={handleCallbackRequest}
-    className="w-full bg-orange-600 hover:bg-orange-700 text-white"
-  >
-    <Phone className="h-4 w-4 mr-2" />
-    Request Callback
-  </Button>
-</div>
-                            </CardContent>
-                          </Card>
-                        </motion.div>
-                      ))}
+              <Card className="overflow-hidden h-full flex flex-col transition-all duration-300 hover:shadow-lg bg-white ">
+                <div className="relative h-48 overflow-hidden">
+                  <Image
+                    src={destination.image}
+                    alt={destination.name}
+                    width={400}
+                    height={300}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 text-white"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-0 left-0 p-4 w-full">
+                    <h3 className="text-xl font-bold text-white">{destination.name}</h3>
+                    <div className="flex items-center mt-1">
+                      <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                      <span className="ml-1 text-white text-sm">{destination.rating}</span>
+                    </div>
                   </div>
                 </div>
-              ))}
+                <CardContent className="p-4 flex-grow flex flex-col">
+                  <p className="text-gray-600 mb-4 text-sm flex-grow">
+                    {destination.description}
+                  </p>
+                  <div className="mt-4 pt-4 ">
+                    <div className="flex flex-col space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="font-bold text-lg text-orange-600">{destination.price}</span>
+                        <div className="flex items-center space-x-2 ">
+                          <Button 
+                            size="sm"
+                            variant="outline"
+                            onClick={() => openForm(destination.name)}
+                            className="text-xs px-3 py-1 h-8 bg-orange-800"
+                          >
+                            Request Callback
+                          </Button>
+                          <Button 
+                            size="sm"
+                            variant="outline"
+                            onClick={() => window.open(`https://wa.me/919447046426?text=Hi, I'm interested in ${destination.name} package. Can you provide more details?`, '_blank')}
+                            className="text-xs px-3 py-1 h-8 bg-green-600 text-white border-green-200 hover:bg-green-200"
+                          >
+                            Send Message
+                          </Button>
+                          <Button 
+                            size="sm"
+                            variant="outline"
+                            onClick={() => window.location.href = 'tel:9447046426'}
+                            className="text-xs p-2 h-8 w-8 min-w-0"
+                            title="Call Now"
+                          >
+                            <Phone className="h-4 w-4 text-green-800" />
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </motion.div>
-          </div>
+          ))}
         </div>
-
-        {/* Call to Action */}
-        <motion.div
-          initial={{ y: 50, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          viewport={{ once: true }}
-          className="text-center mt-16"
-        >
-         <p className="text-lg text-gray-300 mb-6">
-  Can&apos;t find your dream destination? We create custom itineraries too!
-</p>
-          <Button
-            size="lg"
-            onClick={handleCallbackRequest}
-            className="bg-orange-600 hover:bg-orange-700 text-white px-8 py-4"
-          >
-            <Phone className="h-5 w-5 mr-2" />
-            Plan Custom Trip
-          </Button>
-        </motion.div>
       </div>
+
+      {showForm && (
+        <CallbackForm
+          destination={selectedDestination}
+          onClose={() => setShowForm(false)}
+        />
+      )}
     </section>
-  )
+  );
 }

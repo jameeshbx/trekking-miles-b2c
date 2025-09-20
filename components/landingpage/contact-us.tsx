@@ -187,7 +187,7 @@ export default function ContactUs() {
       <Button
         type="button"
         onClick={handleCallClick}
-        className="flex-1 bg-orange-800 hover:bg-blue-700 text-white py-3 text-lg font-semibold group transition-colors"
+        className="flex-1 bg-orange-800 hover:bg-orange-600 text-white py-3 text-lg font-semibold group transition-colors"
       >
         <Phone className="h-5 w-5 mr-2" />
         Call Us Now
@@ -212,6 +212,7 @@ export default function ContactUs() {
                 <Phone className="h-12 w-12 mx-auto mb-4" />
                 <h3 className="text-2xl font-bold mb-2 text-white">Call Us Now</h3>
                 <p className="mb-4 opacity-90">Speak directly with our travel experts</p>
+                <div className="flex flex-col sm:flex-row gap-4 ml-[156px]">
                 <Button
                   variant="secondary"
                   size="lg"
@@ -220,6 +221,17 @@ export default function ContactUs() {
                   <Phone className="h-5 w-5 mr-2" />
                   9447046426
                 </Button>
+                
+
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  className="bg-orange-800 text-primary hover:bg-orange-800 font-semibold"
+                >
+                  <Phone className="h-5 w-5 mr-2" />
+                  9633779922
+                </Button>
+                </div>
               </CardContent>
             </Card>
 

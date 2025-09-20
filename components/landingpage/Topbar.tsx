@@ -4,6 +4,8 @@ import { useState } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Menu, X, Phone } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
 
 export default function Topbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -28,8 +30,9 @@ export default function Topbar() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="flex items-center space-x-2"
           >
-            
-           <img src="/tm-logo.png" alt="" width={100} height={50} />
+            <Link href="/">
+              <Image src="/tm-logo.png" alt="Trekking Miles Logo" width={100} height={50} priority />
+            </Link>
           </motion.div>
 
           {/* Desktop Navigation */}
@@ -39,18 +42,18 @@ export default function Topbar() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="hidden md:flex items-center space-x-8"
           >
-            <a href="#home" className="text-foreground hover:text-primary transition-colors duration-200 text-white">
+            <Link href="#home" className="text-foreground hover:text-primary transition-colors duration-200 text-white">
               Home
-            </a>
-            <a href="#destinations" className="text-foreground hover:text-primary transition-colors duration-200 text-white">
+            </Link>
+            <Link href="#destinations" className="text-foreground hover:text-primary transition-colors duration-200 text-white">
               Destinations
-            </a>
-            <a href="#testimonials" className="text-foreground hover:text-primary transition-colors duration-200 text-white">
+            </Link>
+            <Link href="#testimonials" className="text-foreground hover:text-primary transition-colors duration-200 text-white">
               Reviews
-            </a>
-            <a href="#contact" className="text-foreground hover:text-primary transition-colors duration-200 text-white">
+            </Link>
+            <Link href="#contact" className="text-foreground hover:text-primary transition-colors duration-200 text-white">
               Contact
-            </a>
+            </Link>
           </motion.nav>
 
           {/* Call Button & Mobile Menu */}
@@ -89,18 +92,18 @@ export default function Topbar() {
             className="md:hidden py-4 border-t border-border"
           >
             <nav className="flex flex-col space-y-4">
-              <a href="#home" className="text-foreground hover:text-primary transition-colors duration-200">
+              <Link href="#home" className="text-foreground hover:text-primary transition-colors duration-200">
                 Home
-              </a>
-              <a href="#destinations" className="text-foreground hover:text-primary transition-colors duration-200">
+              </Link>
+              <Link href="#destinations" className="text-foreground hover:text-primary transition-colors duration-200">
                 Destinations
-              </a>
-              <a href="#testimonials" className="text-foreground hover:text-primary transition-colors duration-200">
+              </Link>
+              <Link href="#testimonials" className="text-foreground hover:text-primary transition-colors duration-200">
                 Reviews
-              </a>
-              <a href="#contact" className="text-foreground hover:text-primary transition-colors duration-200">
+              </Link>
+              <Link href="#contact" className="text-foreground hover:text-primary transition-colors duration-200">
                 Contact
-              </a>
+              </Link>
               <Button
                 onClick={handleCallClick}
                 className="w-full sm:hidden bg-primary hover:bg-primary/90 text-primary-foreground"
