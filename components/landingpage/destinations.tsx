@@ -292,7 +292,7 @@ export default function DestinationsCarousel() {
                             onClick={() => window.open(`https://wa.me/919447046426?text=Hi, I'm interested in ${destination.name} package. Can you provide more details?`, '_blank')}
                             className="text-xs px-3 py-1 h-8 bg-green-600 text-white border-green-200 hover:bg-green-200"
                           >
-                            Send Message
+                            WhatsApp 
                           </Button>
                           <Button 
                             size="sm"
