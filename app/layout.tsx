@@ -6,6 +6,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 
+
 const nunito = Nunito({
   weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
   subsets: ["latin"],
@@ -13,7 +14,7 @@ const nunito = Nunito({
 });
 
 export const metadata: Metadata = {
-  title: "Trekking Miles - Explore, Discover and Experience!",
+  title: "Trekking Miles ",
   description: "A Sustainable Tourism Initiative! Travel, Experience and Help Local!",
 };
 
