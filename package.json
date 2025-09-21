@@ -2,7 +2,6 @@
   "name": "next15-landingpage-v4",
   "version": "0.1.0",
   "private": true,
-
   "scripts": {
     "postinstall": "npx prisma generate && npx prisma migrate dev",
     "dev": "next dev",
@@ -13,18 +12,26 @@
   },
   "dependencies": {
     "@prisma/client": "^6.6.0",
+    "@radix-ui/react-label": "^2.1.7",
+    "@radix-ui/react-slot": "^1.2.3",
     "@rumess/react-flip-countdown": "^1.2.6",
+    "@types/nodemailer": "^7.0.1",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
     "aos": "^3.0.0-beta.6",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "framer-motion": "^12.23.14",
+    "lucide-react": "^0.544.0",
     "next": "15.2.4",
     "next-themes": "^0.4.6",
+    "nodemailer": "^7.0.6",
     "prisma": "^6.6.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
-    "react-multi-carousel": "^2.8.5"
+    "react-multi-carousel": "^2.8.5",
+    "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
