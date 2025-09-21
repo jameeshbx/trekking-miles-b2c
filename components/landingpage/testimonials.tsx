@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { Star, Quote, ChevronLeft, ChevronRight } from "lucide-react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 
 const testimonials = [
@@ -110,30 +110,62 @@ const testimonials = [
 
 export default function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const itemsPerPage = {
-    desktop: 3,
-    tablet: 2,
-    mobile: 1,
+  const [screenSize, setScreenSize] = useState('desktop')
+
+  // Responsive items per page
+  const getItemsPerPage = () => {
+    if (screenSize === 'mobile') return 1
+    if (screenSize === 'tablet') return 2
+    return 3 // desktop
   }
 
+  const itemsPerPage = getItemsPerPage()
+
+  // Handle screen size detection
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth
+      if (width < 768) {
+        setScreenSize('mobile')
+      } else if (width < 1024) {
+        setScreenSize('tablet')
+      } else {
+        setScreenSize('desktop')
+      }
+    }
+
+    // Initial check
+    handleResize()
+    
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  // Reset current index when screen size changes
+  useEffect(() => {
+    setCurrentIndex(0)
+  }, [screenSize])
+
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + itemsPerPage.desktop >= testimonials.length ? 0 : prev + itemsPerPage.desktop))
+    const maxIndex = testimonials.length - itemsPerPage
+    setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1))
   }
 
   const prevSlide = () => {
-    setCurrentIndex((prev) =>
-      prev === 0 ? Math.max(0, testimonials.length - itemsPerPage.desktop) : Math.max(0, prev - itemsPerPage.desktop),
-    )
+    const maxIndex = testimonials.length - itemsPerPage
+    setCurrentIndex((prev) => (prev === 0 ? maxIndex : prev - 1))
   }
 
   const goToSlide = (index: number) => {
-    setCurrentIndex(index * itemsPerPage.desktop)
+    setCurrentIndex(index)
   }
 
-  const totalSlides = Math.ceil(testimonials.length / itemsPerPage.desktop)
+  const totalSlides = Math.max(1, testimonials.length - itemsPerPage + 1)
+  const canGoPrev = currentIndex > 0
+  const canGoNext = currentIndex < testimonials.length - itemsPerPage
 
   return (
-    <section id="testimonials" className="py-20 bg-black">
+    <section id="testimonials" className="py-12 sm:py-16 lg:py-20 bg-black">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
@@ -141,111 +173,127 @@ export default function Testimonials() {
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-8 sm:mb-12 lg:mb-16"
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 text-balance text-white dark:text-white">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 sm:mb-4">
             What Our Travelers Say
           </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-pretty text-white dark:text-white">
-  Don&apos;t just take our word for it. Here&apos;s what our happy travelers have to say about their incredible journeys
-  with TrekkingMiles.
-</p>
+          <p className="text-base sm:text-lg text-white max-w-2xl mx-auto px-4">
+            Don&apos;t just take our word for it. Here&apos;s what our happy travelers have to say about their incredible journeys with TrekkingMiles.
+          </p>
         </motion.div>
 
         {/* Testimonials Carousel */}
         <div className="relative">
-          {/* Navigation Arrows */}
+          {/* Navigation Arrows - Hidden on mobile, visible on tablet+ */}
           <button
             onClick={prevSlide}
-            disabled={currentIndex === 0}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-white dark:bg-gray-800 rounded-full p-2 shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={!canGoPrev}
+            className="hidden sm:block absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 lg:-translate-x-4 z-10 bg-white rounded-full p-2 lg:p-3 shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <ChevronLeft className="h-6 w-6 text-gray-600  bg-white" />
+            <ChevronLeft className="h-4 w-4 lg:h-6 lg:w-6 text-gray-600" />
           </button>
 
           <button
             onClick={nextSlide}
-            disabled={currentIndex + itemsPerPage.desktop >= testimonials.length}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-white  rounded-full p-2 shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={!canGoNext}
+            className="hidden sm:block absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 lg:translate-x-4 z-10 bg-white rounded-full p-2 lg:p-3 shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <ChevronRight className="h-6 w-6 text-gray-600  bg-white" />
+            <ChevronRight className="h-4 w-4 lg:h-6 lg:w-6 text-gray-600" />
           </button>
 
           {/* Carousel Container */}
-          <div className="overflow-hidden ">
+          <div className="overflow-hidden">
             <div
-              className="flex transition-transform duration-500 ease-in-out "
-              style={{ transform: `translateX(-${(currentIndex / itemsPerPage.desktop) * 100}%)` }}
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{ transform: `translateX(-${currentIndex * (100 / itemsPerPage)}%)` }}
             >
-              {Array.from({ length: totalSlides }).map((_, slideIndex) => (
-                <div key={slideIndex} className="w-full flex-shrink-0">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {testimonials
-                      .slice(slideIndex * itemsPerPage.desktop, (slideIndex + 1) * itemsPerPage.desktop)
-                      .map((testimonial, index) => (
-                        <motion.div
-                          key={testimonial.id}
-                          initial={{ y: 50, opacity: 0 }}
-                          whileInView={{ y: 0, opacity: 1 }}
-                          transition={{ duration: 0.6, delay: index * 0.1 }}
-                          viewport={{ once: true }}
-                        >
-                          <Card className="h-full bg-white text-black border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
-                            <CardContent className="p-6">
-                              {/* Quote Icon */}
-                              <Quote className="h-8 w-8 text-primary mb-4" />
+              {testimonials.map((testimonial, index) => (
+                <motion.div
+                  key={testimonial.id}
+                  initial={{ y: 50, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.6, delay: (index % itemsPerPage) * 0.1 }}
+                  viewport={{ once: true }}
+                  className={`${
+                    screenSize === 'mobile' 
+                      ? 'w-full' 
+                      : screenSize === 'tablet' 
+                        ? 'w-1/2' 
+                        : 'w-1/3'
+                  } flex-shrink-0 px-2 sm:px-3 lg:px-4`}
+                >
+                  <Card className="h-full bg-white text-black border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <CardContent className="p-4 sm:p-5 lg:p-6">
+                      {/* Quote Icon */}
+                      <Quote className="h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8 text-primary mb-3 sm:mb-4" />
 
-                              {/* Rating */}
-                              <div className="flex items-center space-x-1 mb-4">
-                                {[...Array(testimonial.rating)].map((_, i) => (
-                                  <Star key={i} className="h-4 w-4 text-yellow-500 fill-current" />
-                                ))}
-                              </div>
+                      {/* Rating */}
+                      <div className="flex items-center space-x-1 mb-3 sm:mb-4">
+                        {[...Array(testimonial.rating)].map((_, i) => (
+                          <Star key={i} className="h-3 w-3 sm:h-4 sm:w-4 text-yellow-500 fill-current" />
+                        ))}
+                      </div>
 
-                              {/* Testimonial Text */}
-                              <p className="text-card-foreground mb-6 text-pretty leading-relaxed">
-  &ldquo;{testimonial.text}&rdquo;
-</p>
+                      {/* Testimonial Text */}
+                      <p className="text-card-foreground mb-4 sm:mb-6 text-sm sm:text-base leading-relaxed line-clamp-4 sm:line-clamp-none">
+                        &ldquo;{testimonial.text}&rdquo;
+                      </p>
 
-                              {/* Trip Info */}
-                              <div className="bg-muted rounded-lg p-3 mb-4">
-                                <p className="text-sm font-semibold text-primary">{testimonial.trip}</p>
-                              </div>
+                      {/* Trip Info */}
+                      <div className="bg-muted rounded-lg p-2 sm:p-3 mb-3 sm:mb-4">
+                        <p className="text-xs sm:text-sm font-semibold text-primary">{testimonial.trip}</p>
+                      </div>
 
-                              {/* Author Info */}
-                              <div className="flex items-center space-x-3">
-                                <Image
-                                  src={testimonial.image || "/placeholder.svg"}
-                                  alt={testimonial.name}
-                                  width={48}
-                                  height={48}
-                                  className="w-12 h-12 rounded-full object-cover"
-                                />
-                                <div>
-                                  <h4 className="font-semibold text-card-foreground">{testimonial.name}</h4>
-                                  <p className="text-sm text-muted-foreground">{testimonial.location}</p>
-                                </div>
-                              </div>
-                            </CardContent>
-                          </Card>
-                        </motion.div>
-                      ))}
-                  </div>
-                </div>
+                      {/* Author Info */}
+                      <div className="flex items-center space-x-2 sm:space-x-3">
+                        <Image
+                          src={testimonial.image || "/placeholder.svg"}
+                          alt={testimonial.name}
+                          width={40}
+                          height={40}
+                          className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover"
+                        />
+                        <div>
+                          <h4 className="font-semibold text-card-foreground text-sm sm:text-base">{testimonial.name}</h4>
+                          <p className="text-xs sm:text-sm text-muted-foreground">{testimonial.location}</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
               ))}
             </div>
           </div>
 
+          {/* Mobile Navigation Arrows */}
+          <div className="sm:hidden flex justify-center space-x-4 mt-4">
+            <button
+              onClick={prevSlide}
+              disabled={!canGoPrev}
+              className="bg-white rounded-full p-2 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <ChevronLeft className="h-5 w-5 text-gray-600" />
+            </button>
+            <button
+              onClick={nextSlide}
+              disabled={!canGoNext}
+              className="bg-white rounded-full p-2 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <ChevronRight className="h-5 w-5 text-gray-600" />
+            </button>
+          </div>
+
           {/* Slide Indicators */}
-          <div className="flex justify-center space-x-2 mt-8">
+          <div className="flex justify-center space-x-1 sm:space-x-2 mt-6 sm:mt-8">
             {Array.from({ length: totalSlides }).map((_, index) => (
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
-                className={`w-3 h-3 rounded-full transition-all duration-200 ${
-                  Math.floor(currentIndex / itemsPerPage.desktop) === index
+                className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-200 ${
+                  currentIndex === index
                     ? "bg-primary scale-110"
-                    : "bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500"
+                    : "bg-gray-300 hover:bg-gray-400"
                 }`}
               />
             ))}
@@ -258,24 +306,24 @@ export default function Testimonials() {
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.3 }}
           viewport={{ once: true }}
-          className="mt-16 text-center"
+          className="mt-12 sm:mt-16 text-center"
         >
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 max-w-4xl mx-auto">
             <div className="flex flex-col items-center">
-              <div className="text-3xl font-bold text-primary mb-2">4.9/5</div>
-              <div className="text-sm text-muted-foreground">Average Rating</div>
+              <div className="text-2xl sm:text-3xl font-bold text-primary mb-1 sm:mb-2">4.9/5</div>
+              <div className="text-xs sm:text-sm text-white">Average Rating</div>
             </div>
             <div className="flex flex-col items-center">
-              <div className="text-3xl font-bold text-primary mb-2">10,000+</div>
-              <div className="text-sm text-muted-foreground">Happy Customers</div>
+              <div className="text-2xl sm:text-3xl font-bold text-primary mb-1 sm:mb-2">10,000+</div>
+              <div className="text-xs sm:text-sm text-white">Happy Customers</div>
             </div>
             <div className="flex flex-col items-center">
-              <div className="text-3xl font-bold text-primary mb-2">50+</div>
-              <div className="text-sm text-muted-foreground">Destinations</div>
+              <div className="text-2xl sm:text-3xl font-bold text-primary mb-1 sm:mb-2">50+</div>
+              <div className="text-xs sm:text-sm text-white">Destinations</div>
             </div>
             <div className="flex flex-col items-center">
-              <div className="text-3xl font-bold text-primary mb-2">15+</div>
-              <div className="text-sm text-muted-foreground">Years Experience</div>
+              <div className="text-2xl sm:text-3xl font-bold text-primary mb-1 sm:mb-2">15+</div>
+              <div className="text-xs sm:text-sm text-white">Years Experience</div>
             </div>
           </div>
         </motion.div>

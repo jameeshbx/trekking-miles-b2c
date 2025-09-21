@@ -1,6 +1,6 @@
 "use client"
 
-import { motion} from "framer-motion"
+import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, MapPin, Users, Award } from "lucide-react"
 import { useState, useEffect } from "react"
@@ -24,11 +24,10 @@ export default function HeroSection() {
       setIsTransitioning(true)
       setNextImageIndex((prevIndex) => (prevIndex + 1) % backgroundImages.length)
       
-      // After the crossfade completes, update the current image
       const timer = setTimeout(() => {
         setCurrentImageIndex(nextImageIndex)
         setIsTransitioning(false)
-      }, 1000) // Match this with the transition duration
+      }, 1000)
       
       return () => clearTimeout(timer)
     }, 4000)
@@ -79,7 +78,7 @@ export default function HeroSection() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+      <div className="relative z-10 container mx-auto px-3 sm:px-6 lg:px-8 text-center text-white">
         <motion.div
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -90,7 +89,7 @@ export default function HeroSection() {
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-balance"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 text-balance leading-tight"
           >
             Explore the World&apos;s
             <span className="text-primary block">Hidden Gems</span>
@@ -100,7 +99,7 @@ export default function HeroSection() {
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="text-lg md:text-xl lg:text-2xl mb-8 text-white/90 max-w-2xl mx-auto text-pretty"
+            className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 text-white/90 max-w-2xl mx-auto text-pretty px-2 sm:px-0"
           >
             Discover breathtaking destinations across Asia with expert guides, personalized itineraries, and
             unforgettable adventures that last a lifetime.
@@ -110,20 +109,20 @@ export default function HeroSection() {
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.8 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
+            className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-8 sm:mb-12 px-2 sm:px-0"
           >
             <Button
               size="lg"
               onClick={handleCallClick}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 text-lg font-semibold group"
+              className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold group"
             >
               Start Your Adventure
-              <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5 group-hover:translate-x-1 transition-transform" />
             </Button>
             <Button
               size="lg"
               variant="outline"
-              className="border-white text-white bg-secondary hover:bg-secondary/90 hover:text-secondary-foreground px-8 py-4 text-lg"
+              className="w-full sm:w-auto border-white text-white bg-secondary hover:bg-secondary/90 hover:text-secondary-foreground px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg"
             >
               View Destinations
             </Button>
@@ -134,22 +133,22 @@ export default function HeroSection() {
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 1 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto"
+            className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 max-w-xs sm:max-w-lg md:max-w-2xl mx-auto px-2 sm:px-0"
           >
             <div className="flex flex-col items-center">
-              <Users className="h-8 w-8 text-primary mb-2" />
-              <div className="text-2xl font-bold">10,000+</div>
-              <div className="text-white/80">Happy Travelers</div>
+              <Users className="h-6 w-6 sm:h-8 sm:w-8 text-primary mb-1 sm:mb-2" />
+              <div className="text-lg sm:text-xl md:text-2xl font-bold">10,000+</div>
+              <div className="text-xs sm:text-sm md:text-base text-white/80 text-center">Happy Travelers</div>
             </div>
             <div className="flex flex-col items-center">
-              <MapPin className="h-8 w-8 text-primary mb-2" />
-              <div className="text-2xl font-bold">50+</div>
-              <div className="text-white/80">Destinations</div>
+              <MapPin className="h-6 w-6 sm:h-8 sm:w-8 text-primary mb-1 sm:mb-2" />
+              <div className="text-lg sm:text-xl md:text-2xl font-bold">50+</div>
+              <div className="text-xs sm:text-sm md:text-base text-white/80 text-center">Destinations</div>
             </div>
             <div className="flex flex-col items-center">
-              <Award className="h-8 w-8 text-primary mb-2" />
-              <div className="text-2xl font-bold">5+</div>
-              <div className="text-white/80">Years Experience</div>
+              <Award className="h-6 w-6 sm:h-8 sm:w-8 text-primary mb-1 sm:mb-2" />
+              <div className="text-lg sm:text-xl md:text-2xl font-bold">5+</div>
+              <div className="text-xs sm:text-sm md:text-base text-white/80 text-center">Years Experience</div>
             </div>
           </motion.div>
         </motion.div>
@@ -160,17 +159,17 @@ export default function HeroSection() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 1.5 }}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+        className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2"
       >
         <motion.div
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-          className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center"
+          className="w-5 h-8 sm:w-6 sm:h-10 border-2 border-white/50 rounded-full flex justify-center"
         >
           <motion.div
             animate={{ y: [0, 12, 0] }}
             transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-            className="w-1 h-3 bg-white/70 rounded-full mt-2"
+            className="w-1 h-2 sm:h-3 bg-white/70 rounded-full mt-1 sm:mt-2"
           />
         </motion.div>
       </motion.div>
