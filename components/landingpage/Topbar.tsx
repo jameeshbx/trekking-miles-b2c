@@ -1,18 +1,37 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { Button } from "@/components/ui/button"
-import { Menu, X, Phone } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Menu, X, Phone, User } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Topbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleCallClick = () => {
-    window.location.href = "tel:9447046426"
-  }
+    window.location.href = "tel:9447046426";
+  };
+
+  const router = useRouter();
+
+  // Smooth scroll function
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const headerHeight = 80; // Approximate header height
+      const elementPosition = element.offsetTop - headerHeight;
+
+      window.scrollTo({
+        top: elementPosition,
+        behavior: "smooth",
+      });
+    }
+    // Close mobile menu if open
+    setIsMenuOpen(false);
+  };
 
   return (
     <motion.header
@@ -31,13 +50,13 @@ export default function Topbar() {
             className="flex items-center space-x-2"
           >
             <Link href="/">
-              <Image 
-                src="/tm-logo.png" 
-                alt="Trekking Miles Logo" 
-                width={80} 
-                height={40} 
-                className="sm:w-[100px] sm:h-[50px]" 
-                priority 
+              <Image
+                src="/tm-logo.png"
+                alt="Trekking Miles Logo"
+                width={80}
+                height={40}
+                className="sm:w-[100px] sm:h-[50px]"
+                priority
               />
             </Link>
           </motion.div>
@@ -49,30 +68,51 @@ export default function Topbar() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="hidden md:flex items-center space-x-6 lg:space-x-8"
           >
-            <Link href="#home" className="text-white hover:text-primary transition-colors duration-200 text-sm lg:text-base">
+            <button
+              onClick={() => scrollToSection("home")}
+              className="text-white hover:text-primary transition-colors duration-200 text-sm lg:text-base"
+            >
               Home
-            </Link>
-            <Link href="#destinations" className="text-white hover:text-primary transition-colors duration-200 text-sm lg:text-base">
+            </button>
+            <button
+              onClick={() => scrollToSection("destinations")}
+              className="text-white hover:text-primary transition-colors duration-200 text-sm lg:text-base"
+            >
               Destinations
-            </Link>
-            <Link href="#testimonials" className="text-white hover:text-primary transition-colors duration-200 text-sm lg:text-base">
+            </button>
+            <button
+              onClick={() => scrollToSection("testimonials")}
+              className="text-white hover:text-primary transition-colors duration-200 text-sm lg:text-base"
+            >
               Reviews
-            </Link>
-            <Link href="#contact" className="text-white hover:text-primary transition-colors duration-200 text-sm lg:text-base">
+            </button>
+            <button
+              onClick={() => scrollToSection("contact")}
+              className="text-white hover:text-primary transition-colors duration-200 text-sm lg:text-base"
+            >
               Contact
-            </Link>
+            </button>
           </motion.nav>
 
           {/* Call Button & Mobile Menu */}
-          <div className="flex items-center space-x-2 sm:space-x-4">
+          <div className="flex flex-col items-center space-x-2 sm:space-x-4">
             <motion.div
               initial={{ x: 50, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.6 }}
+              className="flex items-center space-x-2"
             >
               <Button
+                variant="outline"
+                className="hidden md:flex items-center space-x-2 bg-orange-800 hover:bg-green-800 text-white px-3 py-2 text-sm lg:px-4 lg:text-base"
+                onClick={() => router.push("/auth/signin")}
+              >
+                <User className="h-4 w-4 mr-2" />
+                Sign In
+              </Button>
+              <Button
                 onClick={handleCallClick}
-                className="hidden sm:flex items-center space-x-2 bg-orange-800 hover:bg-green-800 text-white px-3 py-2 text-sm lg:px-4 lg:text-base"
+                className="hidden md:flex items-center space-x-2 bg-orange-800 hover:bg-green-800 text-white px-3 py-2 text-sm lg:px-4 lg:text-base"
               >
                 <Phone className="h-3 w-3 lg:h-4 lg:w-4" />
                 <span className="hidden lg:inline">Call Now</span>
@@ -85,7 +125,11 @@ export default function Topbar() {
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="md:hidden p-2 text-white hover:text-primary transition-colors"
             >
-              {isMenuOpen ? <X className="h-5 w-5 sm:h-6 sm:w-6" /> : <Menu className="h-5 w-5 sm:h-6 sm:w-6" />}
+              {isMenuOpen ? (
+                <X className="h-5 w-5 sm:h-6 sm:w-6" />
+              ) : (
+                <Menu className="h-5 w-5 sm:h-6 sm:w-6" />
+              )}
             </button>
           </div>
         </div>
@@ -100,48 +144,52 @@ export default function Topbar() {
             className="md:hidden py-4 border-t border-white/20"
           >
             <nav className="flex flex-col space-y-4">
-              <Link 
-                href="#home" 
-                className="text-white hover:text-primary transition-colors duration-200 py-2 px-2"
-                onClick={() => setIsMenuOpen(false)}
+              <button
+                onClick={() => scrollToSection("home")}
+                className="text-white hover:text-primary transition-colors duration-200 py-2 px-2 text-left"
               >
                 Home
-              </Link>
-              <Link 
-                href="#destinations" 
-                className="text-white hover:text-primary transition-colors duration-200 py-2 px-2"
-                onClick={() => setIsMenuOpen(false)}
+              </button>
+              <button
+                onClick={() => scrollToSection("destinations")}
+                className="text-white hover:text-primary transition-colors duration-200 py-2 px-2 text-left"
               >
                 Destinations
-              </Link>
-              <Link 
-                href="#testimonials" 
-                className="text-white hover:text-primary transition-colors duration-200 py-2 px-2"
-                onClick={() => setIsMenuOpen(false)}
+              </button>
+              <button
+                onClick={() => scrollToSection("testimonials")}
+                className="text-white hover:text-primary transition-colors duration-200 py-2 px-2 text-left"
               >
                 Reviews
-              </Link>
-              <Link 
-                href="#contact" 
-                className="text-white hover:text-primary transition-colors duration-200 py-2 px-2"
-                onClick={() => setIsMenuOpen(false)}
+              </button>
+              <button
+                onClick={() => scrollToSection("contact")}
+                className="text-white hover:text-primary transition-colors duration-200 py-2 px-2 text-left"
               >
                 Contact
-              </Link>
+              </button>
               <Button
                 onClick={() => {
-                  handleCallClick()
-                  setIsMenuOpen(false)
+                  handleCallClick();
+                  setIsMenuOpen(false);
                 }}
                 className="w-full sm:hidden bg-orange-800 hover:bg-green-800 text-white mt-4"
               >
                 <Phone className="h-4 w-4 mr-2" />
                 Call Now
               </Button>
+
+              <Button
+                variant="outline"
+                className="w-full sm:hidden bg-orange-800 hover:bg-green-800 text-white mt-4"
+              >
+                <User className="h-4 w-4 mr-2 mb-2" />
+                Sign In
+              </Button>
             </nav>
           </motion.div>
         )}
       </div>
     </motion.header>
-  )
+  );
 }

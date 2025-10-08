@@ -1,13 +1,14 @@
-import Topbar from "@/components/landingpage/Topbar"
-import HeroSection from "@/components/landingpage/hero-section"
-import Destinations from "@/components/landingpage/destinations"
-import Testimonials from "@/components/landingpage/testimonials"
-import ContactUs from "@/components/landingpage/contact-us"
-import Footer from "@/components/landingpage/footer"
-import UpcomingEvents from "@/components/landingpage/upcoming-events"
-import UpcomingTreks from "@/components/landingpage/upcoming-treks"
+import Topbar from "@/components/landingpage/Topbar";
+import HeroSection from "@/components/landingpage/hero-section";
+import Destinations from "@/components/landingpage/destinations";
+import Testimonials from "@/components/landingpage/testimonials";
+import ContactUs from "@/components/landingpage/contact-us";
+import Footer from "@/components/landingpage/footer";
+import UpcomingEvents from "@/components/landingpage/upcoming-events";
+import UpcomingTreks from "@/components/landingpage/upcoming-treks";
+import ScrollToTop from "@/components/Helper/ScrollToTop";
 
-import ChatbotIcon from "@/components/landingpage/chatbot-icon"
+import ChatbotIcon from "@/components/landingpage/chatbot-icon";
 
 export default function Home() {
   return (
@@ -17,10 +18,11 @@ export default function Home() {
       <UpcomingEvents />
       <UpcomingTreks />
       <Destinations />
-      <Testimonials/>
-      <ChatbotIcon/>
-       <ContactUs />
-      <Footer /> 
+      <Testimonials />
+      <ChatbotIcon />
+      <ContactUs />
+      <Footer />
+      <ScrollToTop />
     </main>
-  )
+  );
 }
